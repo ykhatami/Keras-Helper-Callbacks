@@ -8,25 +8,26 @@ from sklearn.metrics import precision_score, recall_score, f1_score
 ### We need the whole validation data to calculate precision/recall/f1. When using generators in Keras, the validation data is not readily available in the model. It is available in small batches.
 ### So we need a special method to take care of this situation.
 ### First, we collect all the validation batches, then calculate the scores. If we calculate the scores for each batch, we get incorrect scores.
-"""
-How to use this method:
-    # Set up metrics
-    gen_metric = GeneratorMetrics(
-        val_image_generator,
-        validation_steps)
 
-    # Train the model
-    model2.fit_generator(train_image_generator,
-                        steps_per_epoch=~~,
-                        epochs=~~,
-                        validation_data=val_image_generator,
-                        validation_steps=~~,
-                        callbacks=[gen_metric]
-                        )
-
-    The image generator can be any general purpose image generator or use image_generator_ysn(). 
-"""
 class GeneratorMetrics(keras.callbacks.Callback):
+    """
+    How to use this method:
+        # Set up metrics
+        gen_metric = GeneratorMetrics(
+            val_image_generator,
+            validation_steps)
+
+        # Train the model
+        model.fit_generator(train_image_generator,
+                            steps_per_epoch=~~,
+                            epochs=~~,
+                            validation_data=val_image_generator,
+                            validation_steps=~~,
+                            callbacks=[gen_metric]
+                            )
+
+        The image generator can be any general purpose image generator or use image_generator_ysn(). 
+    """
     def on_train_begin(self, logs={}):
         self._data = []
 
@@ -65,6 +66,11 @@ class GeneratorMetrics(keras.callbacks.Callback):
 ### Use this class with model.fit() to get precision/recall scores.
 ### This is much simpler because we dont use generators. So all the validation data is available to us.
 class Metrics(keras.callbacks.Callback):
+    """
+    Example: 
+    prf_metrics = Metrics()
+    model.fit(**, callbacks=[prf_metrics])
+    """
     def on_train_begin(self, logs={}):
         self._data = []
 
