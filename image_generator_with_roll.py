@@ -40,7 +40,7 @@ def image_generator_ysn(x, y=None, batch_size=64, shuffle=True, enable_shift=Tru
 
         if enable_shift:
             # horizontal shift by a random number shift
-            # We have a slightly higher chance for no shift. See if you can figure out why.
+            # We have a slightly higher chance for zero shift. See if you can figure out why.
             shift = np.random.randint(-n_w, n_w, 1)
             batch_x = np.roll(batch_x, shift=shift, axis=2)
 
